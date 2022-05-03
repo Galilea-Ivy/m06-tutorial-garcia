@@ -96,10 +96,28 @@ export const cartItems = [
     products[3],
   ];
 
-  
-
 const app = express();
 app.use(bodyParser.json());
+
+app.get('/api/products', (req, res) => {
+    res.status(200).json(products);
+});
+
+app.get('/api/users/:userId/cart', (req, res) => {
+    res.status(200).json(cartItems);
+});
+
+app.get('/api/products/:productId', (req, res) => {
+    const { productId } = req.params;
+    const product = products.find((product) => product.id === productId);
+
+    if(product) {
+        res.status(200).json(product);
+    }
+    else {
+        res.status(404).json('Could not find the product');
+    }
+});
 
 app.listen(8000, () => {
     console.log('Server is listening on port 8000');
